@@ -1,11 +1,6 @@
 #Image Steganography Project
 #Open an Image and Look at the Pixels in Hex
-#A Delimmeter of 15-1 and 0 at the end to specify End of the Message helps in Retrieving
-#Functions
-#rgb2Hex
-#hex2Rgb
-#str2Bin
-#bin2Str
+#A Delimmeter of 15-1 and a 0 at the end to specify End of the Message helps in Retrieving
 from PIL import Image
 import binascii
 import optparse
@@ -44,12 +39,12 @@ def hide(filename,message):
 	binary=str2Bin(message)+'1111111111111110'
 	#Hide the binary into the Image and End it with 15-1 and 0 as delimetter
 	#Check if Image is Editable
-	if img.mode in ('PRGBA'):
+	if img.mode in ('RGBA'):
 		img=img.convert('RGBA')
 		datas=img.getdata()
 		#Changing the whole data into Newdata
-		print("Image Data:")
-		print(datas)
+		#print("Image Data:")
+		#print(datas)
 		newData=[]
 		digit=0
 		for item in datas:
@@ -61,8 +56,7 @@ def hide(filename,message):
 					newData.append(newPix)
 			else:
 				newData.append(item)
-		#newData=tuple(newData)
-		print("New Data Made \n",newData)
+		#print("New Data Made \n",newData)
 		img.putdata(newData)
 		img.save(filename,"PNG")
 		return "Data Hidden"
@@ -83,10 +77,10 @@ def retrive(filename):
 				pass
 			else:
 				binary=binary+digit
+				#At the End check if the Binary has Delimetter in the Last or not
 				if(binary[:-16]=='1111111111111110'):
 					print("Message Found: ")
 					return bin2Str(binary[:-16])
-		#At the End check if the Binary has Delimetter in the Last or not
 		return bin2Str(binary)
 	return "Incorrect Image Format!!"
 
